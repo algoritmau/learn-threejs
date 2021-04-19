@@ -13,9 +13,7 @@ const init = () => {
   })
   renderer.setClearColor(new THREE.Color(0x000000))
   renderer.setSize(window.innerWidth, window.innerHeight)
-
-  const axes = new THREE.AxesHelper(20)
-  scene.add(axes)
+  renderer.shadowMap.enabled = true
 
   const planeGeometry = new THREE.PlaneGeometry(60, 20)
   const planeMaterial = new THREE.MeshLambertMaterial({
@@ -23,6 +21,7 @@ const init = () => {
   })
 
   const plane = new THREE.Mesh(planeGeometry, planeMaterial)
+  plane.receiveShadow = true
   plane.rotation.x = -0.5 * Math.PI
   plane.position.x = 15
   plane.position.y = 0
@@ -33,9 +32,9 @@ const init = () => {
   const cubeGeometry = new THREE.BoxGeometry(4, 4, 4)
   const cubeMaterial = new THREE.MeshLambertMaterial({
     color: 0xff0000,
-    // wireframe: true,
   })
   const cube = new THREE.Mesh(cubeGeometry, cubeMaterial)
+  cube.castShadow = true
   cube.position.x = -4
   cube.position.y = 3
   cube.position.z = 0
@@ -45,9 +44,9 @@ const init = () => {
   const sphereGeometry = new THREE.SphereGeometry(4, 20, 20)
   const sphereMaterial = new THREE.MeshLambertMaterial({
     color: 0x7777ff,
-    // wireframe: true,
   })
   const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+  sphere.castShadow = true
   sphere.position.x = 20
   sphere.position.y = 4
   sphere.position.z = 2
@@ -61,11 +60,16 @@ const init = () => {
 
   // Add spotlight for the shadows
   const spotLight = new THREE.SpotLight(0xffffff)
-  spotLight.position.set(-40, 40, 15)
+  spotLight.position.set(16, 40, 32)
+
   spotLight.castShadow = true
-  spotLight.shadow.mapSize = new THREE.Vector2(1024, 1024)
-  spotLight.shadow.camera.far = 130
-  spotLight.shadow.camera.near = 40
+
+  spotLight.shadow.mapSize.width = 1024
+  spotLight.shadow.mapSize.height = 1024
+
+  spotLight.shadow.camera.near = 8
+  spotLight.shadow.camera.far = 80
+  spotLight.shadow.camera.fov = 16
 
   scene.add(spotLight)
 
